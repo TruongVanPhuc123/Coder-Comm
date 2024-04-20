@@ -1,12 +1,23 @@
 import React from "react";
-import { Avatar, Box, Paper, Stack, Typography } from "@mui/material";
+import { Avatar, Box, IconButton, Paper, Stack, Typography } from "@mui/material";
 import { fDate } from "../../utils/formatTime";
 import CommentReaction from "./CommentReaction";
+import CloseIcon from '@mui/icons-material/Close';
+import { useDispatch } from "react-redux";
+import { deleteComments } from "./commentSlice";
+import DeleteComfirm from "../../components/DeleteComfirm";
 
 function CommentCard({ comment }) {
+  const dispatch = useDispatch()
+
+
   return (
     <Stack direction="row" spacing={2}>
-      <Avatar alt={comment.author?.name} src={comment.author?.avatarUrl} />
+      <Stack direction='column' alignItems='center' spacing={3}>
+        <Avatar alt={comment.author?.name} src={comment.author?.avatarUrl} />
+        {/* <IconButton ></IconButton> */}
+        <DeleteComfirm blank={comment} title="Comment" name="Comment" />
+      </Stack>
       <Paper sx={{ p: 1.5, flexGrow: 1, bgcolor: "background.neutral" }}>
         <Stack
           direction="row"

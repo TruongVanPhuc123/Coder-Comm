@@ -53,8 +53,8 @@ function CommentList({ postId }) {
           {totalComments > 1
             ? `${totalComments} comments`
             : totalComments === 1
-            ? `${totalComments} comment`
-            : "No comment"}
+              ? `${totalComments} comment`
+              : "No comment"}
         </Typography>
         {totalComments > COMMENTS_PER_POST && (
           <Pagination

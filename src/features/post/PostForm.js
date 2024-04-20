@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Box, Card, alpha, Stack } from "@mui/material";
+import { Box, Card, alpha, Stack, TextField } from "@mui/material";
 
 import { FormProvider, FTextField, FUploadImage } from "../../components/form";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,12 +25,14 @@ function PostForm() {
     resolver: yupResolver(yupSchema),
     defaultValues,
   });
+
   const {
     handleSubmit,
     reset,
     setValue,
     formState: { isSubmitting },
   } = methods;
+
   const dispatch = useDispatch();
 
   const handleDrop = useCallback(

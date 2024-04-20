@@ -57,8 +57,8 @@ function AddFriend() {
               {totalUsers > 1
                 ? `${totalUsers} users found`
                 : totalUsers === 1
-                ? `${totalUsers} user found`
-                : "No user found"}
+                  ? `${totalUsers} user found`
+                  : "No user found"}
             </Typography>
 
             <Box sx={{ flexGrow: 1 }} />
@@ -66,9 +66,9 @@ function AddFriend() {
             <TablePagination
               sx={{
                 "& .MuiTablePagination-selectLabel, .MuiTablePagination-select, .MuiTablePagination-selectIcon":
-                  {
-                    display: { xs: "none", md: "block" },
-                  },
+                {
+                  display: { xs: "none", md: "block" },
+                },
               }}
               component="div"
               count={totalUsers ? totalUsers : 0}

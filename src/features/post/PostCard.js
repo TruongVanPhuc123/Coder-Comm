@@ -8,6 +8,11 @@ import {
   Typography,
   CardHeader,
   IconButton,
+  MenuItem,
+  Menu,
+  Alert,
+  Divider,
+  Button,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { fDate } from "../../utils/formatTime";
@@ -16,9 +21,77 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PostReaction from "./PostReaction";
 import CommentForm from "../comment/CommentForm";
 import CommentList from "../comment/CommentList";
+import { useDispatch } from "react-redux";
+import { deletePosts } from "./postSlice";
+import useAuth from "../../hooks/useAuth";
+import PostActions from "./PostActions";
+import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteComfirm from "../../components/DeleteComfirm";
+import CommentDelete from "../comment/CommentDelete";
+import UpdatePost from "./PostActions";
 
 function PostCard({ post }) {
+  const dispatch = useDispatch()
+  const { user } = useAuth()
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const isMenuOpen = Boolean(anchorEl);
+
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const menuId = "primary-search-account-menu";
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "right",
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+
+    >
+
+      <Stack alignItems="center" spacing={1}>
+
+        <MenuItem
+          onClick={handleMenuClose}
+          to="/"
+          component={RouterLink}
+          sx={{ mx: 1 }}
+        >
+          <DeleteComfirm blank={post} title="Delete" text="Delete Post" name="Post" />
+        </MenuItem>
+
+        <MenuItem
+          onClick={handleMenuClose}
+          to="/"
+          component={RouterLink}
+          sx={{ mx: 1 }}
+        >
+          <UpdatePost post={post} />
+        </MenuItem>
+      </Stack>
+
+    </Menu>
+  );
+
   return (
+
+
     <Card>
       <CardHeader
         disableTypography
@@ -45,7 +118,8 @@ function PostCard({ post }) {
           </Typography>
         }
         action={
-          <IconButton>
+          // <PostActions />
+          <IconButton onClick={handleProfileMenuOpen} >
             <MoreVertIcon sx={{ fontSize: 30 }} />
           </IconButton>
         }
@@ -71,6 +145,7 @@ function PostCard({ post }) {
         <CommentList postId={post._id} />
         <CommentForm postId={post._id} />
       </Stack>
+      {renderMenu}
     </Card>
   );
 }

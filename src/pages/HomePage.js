@@ -14,6 +14,7 @@ import { capitalCase } from "change-case";
 import AddFriend from "../features/friend/AddFriend";
 import FriendRequests from "../features/friend/FriendRequests";
 import FriendList from "../features/friend/FriendList";
+import FriendOutgoing from "../features/friend/FriendOutgoing";
 
 const TabsWrapperStyle = styled("div")(({ theme }) => ({
   zIndex: 9,
@@ -49,6 +50,11 @@ function HomePage() {
       value: "friends",
       icon: <PeopleAltIcon sx={{ fontSize: 24 }} />,
       component: <FriendList />,
+    },
+    {
+      value: "friends_outgoing",
+      icon: <PeopleAltIcon sx={{ fontSize: 24 }} />,
+      component: <FriendOutgoing />,
     },
     {
       value: "requests",

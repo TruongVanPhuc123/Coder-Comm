@@ -9,19 +9,21 @@ import {
   Container,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { getFriendRequests } from "./friendSlice";
+import { getFriendRequests, getFriendRequestsOut } from "./friendSlice";
 import UserCard from "./UserCard";
 import SearchInput from "../../components/SearchInput";
 
 function FriendRequests() {
   const [filterName, setFilterName] = useState("");
   const [page, setPage] = React.useState(1);
-
   const { currentPageUsers, usersById, totalUsers, totalPages } = useSelector(
     (state) => state.friend
   );
   const users = currentPageUsers.map((userId) => usersById[userId]);
   const dispatch = useDispatch();
+
+  const user2 = users.filter(user => user.friendship !== null)
+  // console.log(user2)
 
   const handleSubmit = (searchQuery) => {
     setFilterName(searchQuery);
@@ -30,6 +32,12 @@ function FriendRequests() {
   useEffect(() => {
     dispatch(getFriendRequests({ filterName, page }));
   }, [filterName, page, dispatch]);
+
+  // useEffect(() => {
+  //   dispatch(getFriendRequestsOut({ filterName, page }));
+  // }, [filterName, page, dispatch])
+  // console.log(users)
+
 
   return (
     <Container>
@@ -48,8 +56,8 @@ function FriendRequests() {
               {totalUsers > 1
                 ? `${totalUsers} requests found`
                 : totalUsers === 1
-                ? `${totalUsers} request found`
-                : "No request found"}
+                  ? `${totalUsers} request found`
+                  : "No request found"}
             </Typography>
 
             <Pagination

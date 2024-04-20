@@ -7,6 +7,7 @@ import useAuth from "../../hooks/useAuth";
 import ActionButton from "./ActionButton";
 
 function UserCard({ profile }) {
+  // console.log(profile)
   const { user } = useAuth();
   const currentUserId = user._id;
   const { _id: targetUserId, name, avatarUrl, email, friendship } = profile;
