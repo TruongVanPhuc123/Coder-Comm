@@ -14,7 +14,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 800,
+    width: "100%",
     bgcolor: 'background.paper',
     boxShadow: 24,
     borderRadius: "10px",
@@ -75,7 +75,7 @@ export default function UpdatePost({ post }) {
                             }
                         />
 
-                        <Stack spacing={2} sx={{ p: 3 }}>
+                        <Stack spacing={2} sx={{ p: 3 }} alignItems={"center"}>
                             <TextField name='content' value={content} onChange={(e) => setContent(e.target.value)} required />
 
                             {post.image && (
@@ -90,9 +90,14 @@ export default function UpdatePost({ post }) {
                                     <img src={post.image} alt="post" />
                                 </Box>
                             )}
-                            <Button variant="outlined" onClick={handleSubmit}>
-                                Update
-                            </Button>
+                            <Stack direction='row' spacing={3}>
+                                <Button variant="outlined" onClick={handleSubmit}>
+                                    Update
+                                </Button>
+                                <Button variant="outlined" onClick={handleClose}>
+                                    Cancel
+                                </Button>
+                            </Stack>
                         </Stack>
                     </Card>
                 </Box>

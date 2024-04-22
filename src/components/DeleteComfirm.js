@@ -13,7 +13,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: "100%",
     bgcolor: 'background.paper',
     boxShadow: 24,
     borderRadius: "10px",
@@ -35,7 +35,7 @@ export default function DeleteComfirm({ blank, title, text, name }) {
                 dispatch(deletePosts({ postId: blank._id }))
                 break;
             case "Comment":
-                dispatch(deleteComments({ commentId: blank._id, postId: blank._id }))
+                dispatch(deleteComments({ commentId: blank._id }))
                 // dispatch(getComments({ postId: blank._id }))
                 break;
             default:
@@ -43,6 +43,7 @@ export default function DeleteComfirm({ blank, title, text, name }) {
         }
         handleClose()
     }
+
 
     return (
         <div>

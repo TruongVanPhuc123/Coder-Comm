@@ -62,23 +62,6 @@ const slice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(deletePosts.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(deletePosts.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.error = null;
-        const newPost = action.payload;
-        state.postsById[newPost._id] = newPost;
-        state.currentPagePosts.pop(newPost._id);
-      })
-      .addCase(deletePosts.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = null;
-        state.books = action.payload;
-        state.error = action.error.message
-      });
-    builder
       .addCase(updatePosts.pending, (state) => {
         state.isLoading = true;
       })
@@ -157,11 +140,20 @@ export const sendPostReaction =
       }
     };
 
-export const deletePosts = createAsyncThunk('deletePosts', async ({ postId }) => {
-  const response = await apiService.delete(`/posts/${postId}`)
-  // getPosts("123")
-  return response.data
-})
+export const deletePosts =
+  ({ postId }) =>
+    async (dispatch) => {
+      dispatch(slice.actions.startLoading());
+      try {
+        const response = await apiService.delete(`/posts/${postId}`);
+        // console.log(response)
+        const userId = response.data.author
+        dispatch(getPosts({ userId }));
+      } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
+      }
+    };
 
 export const updatePosts = createAsyncThunk('updatePosts', async ({ postId, content }) => {
   const response = await apiService.put(`/posts/${postId}`, { content })

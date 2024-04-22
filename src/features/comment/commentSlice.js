@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import apiService from "../../app/apiService";
 import { COMMENTS_PER_POST } from "../../app/config";
@@ -29,7 +29,6 @@ const slice = createSlice({
       state.isLoading = false;
       state.error = "";
       const { postId, comments, count, page } = action.payload;
-      console.log(action.payload)
       comments.forEach(
         (comment) => (state.commentsById[comment._id] = comment)
       );
@@ -52,24 +51,6 @@ const slice = createSlice({
       state.commentsById[commentId].reactions = reactions;
     },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(deleteComments.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(deleteComments.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.error = null;
-        const newPost = action.payload;
-        console.log(newPost)
-        // state.currentPageByPost[newPost._id] = newPost;
-        state.commentsById.pop(newPost._id);
-      })
-      .addCase(deleteComments.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message;
-      });
-  }
 });
 
 export default slice.reducer;
@@ -138,8 +119,18 @@ export const sendCommentReaction =
       }
     };
 
-export const deleteComments = createAsyncThunk('deleteComments', async ({ commentId, postId }, thunkApi) => {
-  const response = await apiService.delete(`/comments/${commentId}`)
-  // thunkApi.dispatch(getComments({ postId }));
-  return response.data
-})
+
+export const deleteComments =
+  ({ commentId }) =>
+    async (dispatch) => {
+      dispatch(slice.actions.startLoading());
+      try {
+        const response = await apiService.delete(`/comments/${commentId}`);
+        const postId = response.data.post || "error"
+        console.log(postId)
+        dispatch(getComments({ postId }));
+      } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
+      }
+    };
