@@ -4,10 +4,7 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import BuildIcon from '@mui/icons-material/Build';
 import { useDispatch, useSelector } from 'react-redux';
-import { Avatar, Card, CardHeader, Link, Stack, TextField, Typography } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom'
-import { fDate } from '../../utils/formatTime';
-import { updatePosts } from './postSlice';
+import UpdatePost from './UpdatePost';
 
 const style = {
     position: 'absolute',
@@ -22,7 +19,7 @@ const style = {
 };
 
 
-export default function UpdatePost({ post }) {
+export default function UpdatePostList({ post }) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -30,78 +27,17 @@ export default function UpdatePost({ post }) {
     const [content, setContent] = React.useState(post.content)
     const dispatch = useDispatch();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        dispatch(updatePosts({ postId: post._id, content }))
-        // console.log({ postId: post._id, content })
-        handleClose()
-    }
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     dispatch(updatePosts({ postId: post._id, content }))
+    //     // console.log({ postId: post._id, content })
+    //     handleClose()
+    // }
 
     return (
         <div>
-            <Button variant="text" onClick={handleOpen} startIcon={<BuildIcon />} >Update Post</Button>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
 
-                    <Card>
-                        <CardHeader
-                            disableTypography
-                            avatar={
-                                <Avatar src={post?.author?.avatarUrl} alt={post?.author?.name} />
-                            }
-                            title={
-                                <Link
-                                    variant="subtitle2"
-                                    color="text.primary"
-                                    component={RouterLink}
-                                    sx={{ fontWeight: 600 }}
-                                    to={`/user/${post.author._id}`}
-                                >
-                                    {post?.author?.name}
-                                </Link>
-                            }
-                            subheader={
-                                <Typography
-                                    variant="caption"
-                                    sx={{ display: "block", color: "text.secondary" }}
-                                >
-                                    {fDate(post.createdAt)}
-                                </Typography>
-                            }
-                        />
-
-                        <Stack spacing={2} sx={{ p: 3 }} alignItems={"center"}>
-                            <TextField name='content' value={content} onChange={(e) => setContent(e.target.value)} required />
-
-                            {post.image && (
-                                <Box
-                                    sx={{
-                                        borderRadius: 2,
-                                        overflow: "hidden",
-                                        height: 300,
-                                        "& img": { objectFit: "cover", width: 1, height: 1 },
-                                    }}
-                                >
-                                    <img src={post.image} alt="post" />
-                                </Box>
-                            )}
-                            <Stack direction='row' spacing={3}>
-                                <Button variant="outlined" onClick={handleSubmit}>
-                                    Update
-                                </Button>
-                                <Button variant="outlined" onClick={handleClose}>
-                                    Cancel
-                                </Button>
-                            </Stack>
-                        </Stack>
-                    </Card>
-                </Box>
-            </Modal>
-        </div>
+            <UpdatePost post={post} />
+        </div >
     );
 }

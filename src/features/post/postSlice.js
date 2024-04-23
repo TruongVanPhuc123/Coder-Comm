@@ -60,23 +60,6 @@ const slice = createSlice({
       state.postsById[postId].reactions = reactions;
     },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(updatePosts.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(updatePosts.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.error = null;
-        // console.log(action.payload)
-      })
-      .addCase(updatePosts.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = null;
-        state.books = action.payload;
-        state.error = action.error.message
-      });
-  }
 });
 
 export default slice.reducer;
@@ -155,8 +138,26 @@ export const deletePosts =
       }
     };
 
-export const updatePosts = createAsyncThunk('updatePosts', async ({ postId, content }) => {
-  const response = await apiService.put(`/posts/${postId}`, { content })
-  console.log(postId, content)
-  return response.data
-})
+export const updatePosts =
+  ({ postId, content, image }) =>
+    async (dispatch) => {
+      dispatch(slice.actions.startLoading());
+      try {
+        // upload image to cloudinary
+        const imageUrl = await cloudinaryUpload(image);
+        console.log(imageUrl)
+        const response = await apiService.put(`/posts/${postId}`, {
+          content,
+          image: imageUrl,
+        });
+        const userId = response.data.author
+        console.log(response);
+        // dispatch(slice.actions.createPostSuccess(response.data));
+        dispatch(getPosts({ userId }));
+        toast.success("Post successfully");
+        dispatch(getCurrentUserProfile());
+      } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
+      }
+    };

@@ -77,7 +77,7 @@ function PostCard({ post }) {
         </MenuItem>
 
         <MenuItem
-          onClick={handleMenuClose}
+          // onClick={handleMenuClose}
           to="/"
           component={RouterLink}
           sx={{ mx: 1 }}
@@ -149,5 +149,7 @@ function PostCard({ post }) {
     </Card>
   );
 }
+
+
 
 export default PostCard;
