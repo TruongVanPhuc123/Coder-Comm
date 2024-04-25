@@ -139,7 +139,7 @@ function PostCard({ post }) {
 
         <PostReaction post={post} />
         <CommentList postId={post._id} />
-        {/* <CommentForm postId={post._id} /> */}
+        <CommentForm postId={post._id} />
       </Stack>
       {renderMenu}
     </Card>
