@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { createPost } from "./postSlice";
+import { createPost, updatePosts } from "./postSlice";
 import { LoadingButton } from "@mui/lab";
 import BuildIcon from '@mui/icons-material/Build';
 
@@ -31,7 +31,7 @@ const defaultValues = {
     image: null,
 };
 
-function PostForm() {
+function UpdatePost({ post }) {
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -68,10 +68,13 @@ function PostForm() {
         [setValue]
     );
 
+
     const onSubmit = (data) => {
-        console.log(data)
-        // dispatch(createPost(data)).then(() => reset());
+        const { content, image } = data;
+        dispatch(updatePosts({ postId: post._id, content, image }));
     };
+
+    console.log("render Update Post")
 
     return (
         <div>
@@ -133,4 +136,4 @@ function PostForm() {
     );
 }
 
-export default PostForm;
+export default UpdatePost;

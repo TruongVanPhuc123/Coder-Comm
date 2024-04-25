@@ -141,6 +141,7 @@ export const deletePosts =
 export const updatePosts =
   ({ postId, content, image }) =>
     async (dispatch) => {
+      console.log(content, image)
       dispatch(slice.actions.startLoading());
       try {
         // upload image to cloudinary

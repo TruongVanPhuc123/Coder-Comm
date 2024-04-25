@@ -28,7 +28,7 @@ import PostActions from "./PostActions";
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteComfirm from "../../components/DeleteComfirm";
 import CommentDelete from "../comment/CommentDelete";
-import UpdatePost from "./PostActions";
+import UpdatePost from "./UpdatePost";
 
 function PostCard({ post }) {
   const dispatch = useDispatch()
@@ -69,8 +69,6 @@ function PostCard({ post }) {
 
         <MenuItem
           onClick={handleMenuClose}
-          to="/"
-          component={RouterLink}
           sx={{ mx: 1 }}
         >
           <DeleteComfirm blank={post} title="Delete" text="Delete Post" name="Post" />
@@ -78,8 +76,6 @@ function PostCard({ post }) {
 
         <MenuItem
           // onClick={handleMenuClose}
-          to="/"
-          component={RouterLink}
           sx={{ mx: 1 }}
         >
           <UpdatePost post={post} />
@@ -143,7 +139,7 @@ function PostCard({ post }) {
 
         <PostReaction post={post} />
         <CommentList postId={post._id} />
-        <CommentForm postId={post._id} />
+        {/* <CommentForm postId={post._id} /> */}
       </Stack>
       {renderMenu}
     </Card>
